@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         mNewReminderText = findViewById(R.id.editText_main);
 
         mReminders = new ArrayList<>();
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mReminders);
-        mListView.setAdapter(mAdapter);
+
+        updateUI();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     mReminders.add(newReminder);
 
 //Tell the adapter that the data set has been modified: the screen will be refreshed.
-                    mAdapter.notifyDataSetChanged();
-
+                    updateUI();
                     //Initialize the EditText for the next item
                     mNewReminderText.setText("");
                 } else {
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mReminders.remove(i);
-                mAdapter.notifyDataSetChanged();
+                updateUI();
                 return true;
             }
         });
@@ -103,4 +102,15 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    private void updateUI() {
+        if (mAdapter == null) {
+            mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mReminders);
+            mListView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+
 }
